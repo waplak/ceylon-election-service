@@ -1,0 +1,97 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!-- Candidates Table -->
+    <changeSet id="1" author="pamitha">
+        <createTable tableName="candidates">
+            <column name="candidate_id" type="INT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="party_name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="party_symbol" type="VARCHAR(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="profile_image" type="VARCHAR(255)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Electoral Districts Table -->
+    <changeSet id="2" author="pamitha">
+        <createTable tableName="electoral_districts">
+            <column name="district_id" type="INT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="district_name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="province_name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Election Table -->
+    <changeSet id="3" author="pamitha">
+        <createTable tableName="election">
+            <column name="election_id" type="INT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="election_year" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="election_date" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="election_type" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Election Results Table -->
+    <changeSet id="4" author="pamitha">
+        <createTable tableName="election_results">
+            <column name="result_id" type="INT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="candidate_id" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="district_id" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="votes" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="total_votes" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="election_year" type="INT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <!-- Foreign key: candidate_id references candidates table -->
+        <addForeignKeyConstraint baseTableName="election_results"
+                                 baseColumnNames="candidate_id"
+                                 constraintName="fk_candidate_id"
+                                 referencedTableName="candidates"
+                                 referencedColumnNames="candidate_id" />
+
+        <!-- Foreign key: district_id references electoral_districts table -->
+        <addForeignKeyConstraint baseTableName="election_results"
+                                 baseColumnNames="district_id"
+                                 constraintName="fk_district_id"
+                                 referencedTableName="electoral_districts"
+                                 referencedColumnNames="district_id" />
+    </changeSet>
+
+</databaseChangeLog>
